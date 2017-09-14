@@ -1,6 +1,6 @@
 package com.example;
 
-public class EquilateralTriangle {
+public class EquilateralTriangle implements Shape {
     private double side;
 
     public EquilateralTriangle(double side) {
@@ -13,5 +13,10 @@ public class EquilateralTriangle {
 
     public void setSide(double side) {
         this.side = side;
+    }
+
+    @Override
+    public double getArea() {
+        return Math.sqrt(3.0)/4 * Math.pow(side, 2.0);
     }
 }

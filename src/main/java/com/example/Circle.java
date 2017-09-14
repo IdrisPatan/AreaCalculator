@@ -1,6 +1,6 @@
 package com.example;
 
-public class Circle {
+public class Circle implements Shape{
     public double radius;
 
     public Circle(double radius) {
@@ -11,7 +11,9 @@ public class Circle {
         return radius;
     }
 
-    public void setRadius(double radius) {
-        this.radius = radius;
+
+    @Override
+    public double getArea() {
+        return Math.pow(radius, 2.0) * Math.PI;
     }
 }

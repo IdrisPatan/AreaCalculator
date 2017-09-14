@@ -1,54 +1,59 @@
 package com.example;
 
+import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static java.lang.Math.pow;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 public class AreaCalculatorTest {
-    double epsilon = Math.pow(2, -16);
+
+    private AreaCalculator areaCalculator;
+
+    @Before
+    public void setUp(){
+        areaCalculator = new AreaCalculator();
+    }
 
     @Test
     public void testCircle() {
-        // Setup
-        double expected = Math.PI;
-        AreaCalculator classUnderTest = new AreaCalculator();
-        Circle shape = new Circle(1.0);
-        Object[] shapes = new Object[] {shape};
+        Shape[] shapes = {new Circle(5.0), new Circle(10.0)};
+        double expected = pow(5.0, 2.0) * Math.PI + pow(10.0, 2.0) * Math.PI;
+        assertThat(areaCalculator.Area(shapes), is(expected));
 
-        // Exercise
-        double actual = classUnderTest.Area(shapes);
-
-        // Assert
-        assertEquals("Area for unit circle should be PI", expected, actual, epsilon);
     }
 
     @Test
     public void testRectangle() {
-        // Setup
-        double expected = 1.0;
-        AreaCalculator classUnderTest = new AreaCalculator();
-        Rectangle shape = new Rectangle(1.0, 1.0);
-        Object[] shapes = new Object[] {shape};
-
-        // Exercise
-        double actual = classUnderTest.Area(shapes);
-
-        // Assert
-        assertEquals("Area for unit rectangle should be 1", expected, actual, epsilon);
+        Shape[] shapes = {new Rectangle(5.0, 2.0), new Rectangle(6.0, 4.0)};
+        double expected = 34.0;
+        assertThat(areaCalculator.Area(shapes), is(expected));
     }
 
     @Test
     public void testEquilateralTriangle() {
-        // Setup
-        double expected = 0.433;
-        AreaCalculator classUnderTest = new AreaCalculator();
-        EquilateralTriangle shape = new EquilateralTriangle(1.0);
-        Object[] shapes = new Object[] {shape};
+        Shape[] shapes = {
+                new EquilateralTriangle(5.0),
+                new EquilateralTriangle(4.0)
+        };
+        double expected = Math.sqrt(3.0) / 4 * Math.pow(5.0, 2.0)
+                + Math.sqrt(3.0) / 4 * Math.pow(4.0, 2.0);
 
-        // Exercise
-        double actual = classUnderTest.Area(shapes);
-
-        // Assert
-        assertEquals("Area for unit triangle should be ~0.433", expected, actual, epsilon);
+        assertThat(areaCalculator.Area(shapes), is(expected));
     }
 
+    @Test
+    public void testCircle_EquilateralTriangle_Rectangle() {
+        Shape[] shapes = {
+                new EquilateralTriangle(5.0),
+                new Rectangle(5.0, 2.0),
+                new Circle(5.0)
+        };
+
+        double expected = Math.sqrt(3.0) / 4 * Math.pow(5.0, 2.0)
+                + 10 + Math.PI * pow(5.0 , 2);
+
+        assertThat(areaCalculator.Area(shapes), is(expected));
+    }
 }
